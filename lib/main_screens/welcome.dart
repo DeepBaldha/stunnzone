@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:stunnzone/widgets/yellow_button.dart';
 
@@ -29,7 +28,6 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
-
   late AnimationController _controller;
   bool processing = false;
   CollectionReference customer =
@@ -234,7 +232,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         ),
                       ),
                       processing == true
-                          ? CircularProgressIndicator()
+                          ? const CircularProgressIndicator()
                           : GoogleFacebookLogin(
                               label: 'Guest',
                               onPressed: () async {
@@ -244,7 +242,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                 await FirebaseAuth.instance
                                     .signInAnonymously()
                                     .whenComplete(() async {
-                                      _uid  = FirebaseAuth.instance.currentUser!.uid;
+                                  _uid = FirebaseAuth.instance.currentUser!.uid;
                                   await customer.doc(_uid).set({
                                     'name': '',
                                     'email': '',
@@ -255,6 +253,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                   });
                                 });
 
+                                // ignore: use_build_context_synchronously
                                 Navigator.pushReplacementNamed(
                                     context, '/customer_home');
                               },

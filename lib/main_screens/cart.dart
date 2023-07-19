@@ -4,7 +4,7 @@ import 'package:stunnzone/widgets/yellow_button.dart';
 
 class CartScreen extends StatefulWidget {
   final Widget? back;
-  const CartScreen({Key? key,this.back}) : super(key: key);
+  const CartScreen({Key? key, this.back}) : super(key: key);
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -64,8 +64,8 @@ class _CartScreenState extends State<CartScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     Text(
                       'Total: \$ ',
                       style: TextStyle(fontSize: 18),
@@ -80,7 +80,11 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ],
                 ),
-                YellowButton(width: 0.45, onPressed: () { }, label: 'CHECK OUT',),
+                YellowButton(
+                  width: 0.45,
+                  onPressed: () {},
+                  label: 'CHECK OUT',
+                ),
               ],
             ),
           ),
@@ -89,4 +93,3 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 }
-

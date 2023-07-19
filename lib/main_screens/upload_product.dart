@@ -77,6 +77,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
       });
     } catch (e) {
       setState(() {
+        // ignore: avoid_print
         print(_pickedImageError);
       });
     }
@@ -104,10 +105,15 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
     if (_formKey.currentState!.validate()) {
       if (imagesFileList!.isNotEmpty) {
         _formKey.currentState!.save();
+        // ignore: avoid_print
         print('valid');
+        // ignore: avoid_print
         print(price);
+        // ignore: avoid_print
         print(quantity);
+        // ignore: avoid_print
         print(proName);
+        // ignore: avoid_print
         print(proDesc);
         setState(() {
           imagesFileList = [];
@@ -161,8 +167,8 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                               items:
                                   categ.map<DropdownMenuItem<String>>((value) {
                                 return DropdownMenuItem(
-                                  child: Text(value),
                                   value: value,
+                                  child: Text(value),
                                 );
                               }).toList(),
                               onChanged: (value) {
@@ -184,8 +190,8 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                               items: subCategList
                                   .map<DropdownMenuItem<String>>((value) {
                                 return DropdownMenuItem(
-                                  child: Text(value),
                                   value: value,
+                                  child: Text(value),
                                 );
                               }).toList(),
                               onChanged: (value) {

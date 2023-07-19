@@ -30,6 +30,7 @@ class _CustomerLoginState extends State<CustomerLogin> {
 
         _formkey.currentState!.reset();
 
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, '/customer_home');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {

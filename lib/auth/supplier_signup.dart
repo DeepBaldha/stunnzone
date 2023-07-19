@@ -27,6 +27,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
   bool passwordVisible = false;
 
   XFile? _imageFile;
+  // ignore: unused_field
   dynamic _pickedImageError;
   CollectionReference suppliers =
       FirebaseFirestore.instance.collection('suppliers');
@@ -288,7 +289,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                         haveAccount: 'Already have account? ',
                       ),
                       processing == true
-                          ? CircularProgressIndicator()
+                          ? const CircularProgressIndicator()
                           : AuthMainButton(
                               onPressed: () {
                                 signUp();

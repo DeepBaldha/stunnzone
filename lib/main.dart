@@ -6,7 +6,6 @@ import 'package:stunnzone/main_screens/cart.dart';
 import 'package:stunnzone/main_screens/customer_home.dart';
 import 'package:stunnzone/main_screens/supplier_home.dart';
 import 'package:stunnzone/main_screens/welcome.dart';
-
 import 'auth/supplier_login.dart';
 import 'auth/supplier_signup.dart';
 

@@ -11,6 +11,7 @@ class CustomerRegister extends StatefulWidget {
   const CustomerRegister({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomerRegisterState createState() => _CustomerRegisterState();
 }
 
@@ -32,7 +33,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   dynamic _pickedImageError;
 
   CollectionReference customers =
-  FirebaseFirestore.instance.collection('customers');
+      FirebaseFirestore.instance.collection('customers');
 
   void _pickImageFromCamera() async {
     try {
@@ -48,6 +49,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
       setState(() {
         _pickedImageError = e;
       });
+      // ignore: avoid_print
       print(_pickedImageError);
     }
   }
@@ -66,6 +68,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
       setState(() {
         _pickedImageError = e;
       });
+      // ignore: avoid_print
       print(_pickedImageError);
     }
   }
@@ -101,6 +104,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
             _imageFile = null;
           });
 
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacementNamed(context, '/customer_login');
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
