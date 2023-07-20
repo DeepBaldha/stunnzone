@@ -6,7 +6,7 @@ class MyMessageHandler {
     _scaffoldKey.currentState!.hideCurrentSnackBar();
     _scaffoldKey.currentState!.showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.yellow,
         content: Text(
           message,
           textAlign: TextAlign.center,
