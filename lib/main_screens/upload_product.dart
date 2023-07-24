@@ -1,8 +1,12 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stunnzone/utilities/categ_list.dart';
 import 'package:stunnzone/widgets/snackbar.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as path;
 
 class UploadProductScreen extends StatefulWidget {
   const UploadProductScreen({Key? key}) : super(key: key);
@@ -27,6 +31,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
   final ImagePicker _picker = ImagePicker();
 
   List<XFile>? imagesFileList = [];
+  List<String> imagesUrlList = [];
   dynamic _pickedImageError;
 
   void pickProductImages() async {
@@ -91,22 +96,25 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
     });
   }
 
-  void uploadProduct() {
+  Future<void> uploadImages() async {
     if (mainCategValue != 'select category' && subCategValue != 'subcategory') {
       if (_formKey.currentState!.validate()) {
         if (imagesFileList!.isNotEmpty) {
-          _formKey.currentState!.save();
-          print('valid');
-          print(price);
-          print(quantity);
-          print(proName);
-          print(proDesc);
-          setState(() {
-            imagesFileList = [];
-            mainCategValue = 'select category';
-            subCategValue = 'subcategory';
-          });
-          _formKey.currentState!.reset();
+          try {
+            for (var image in imagesFileList!) {
+              firebase_storage.Reference ref = firebase_storage
+                  .FirebaseStorage.instance
+                  .ref('products/${path.basename(image.path)}');
+
+              await ref.putFile(File(image.path)).whenComplete(() async {
+                await ref.getDownloadURL().then((value) {
+                  imagesUrlList.add(value);
+                });
+              });
+            }
+          } catch (e) {
+            print(e);
+          }
         } else {
           MyMessageHandler.showSnackBar(_scaffoldKey, 'Pick images first');
         }
@@ -117,6 +125,38 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
       MyMessageHandler.showSnackBar(
           _scaffoldKey, 'Select corresponding category');
     }
+  }
+
+  void uploadData() async {
+    if (imagesUrlList.isEmpty) {
+      CollectionReference productRef =
+          FirebaseFirestore.instance.collection('products');
+      await productRef.doc().set({
+        'maincateg': mainCategValue,
+        'subcateg': subCategValue,
+        'price': price,
+        'instoke': quantity,
+        'proname': proName,
+        'prodesc': proDesc,
+        'sid': FirebaseAuth.instance.currentUser!.uid,
+        'proimages': imagesUrlList,
+        'discount': 0,
+      }).whenComplete(() {
+        setState(() {
+          imagesFileList = [];
+          mainCategValue = 'select category';
+          subCategList = [];
+          imagesUrlList = [];
+        });
+        _formKey.currentState!.reset();
+      });
+    } else {
+      print("Hello World");
+    }
+  }
+
+  void uploadProduct() async {
+    await uploadImages().whenComplete(() => uploadData());
   }
 
   @override
