@@ -139,7 +139,7 @@ class _CustomerLoginState extends State<CustomerLogin> {
                       HaveAccount(
                         onPressed: () {
                           Navigator.pushReplacementNamed(
-                              context, '/customer_signut');
+                              context, '/customer_signup');
                         },
                         actionLabel: 'Sign Up',
                         haveAccount: 'Don\'t have account? ',

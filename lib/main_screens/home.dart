@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stunnzone/galleries/men_gallery.dart';
 import 'package:stunnzone/widgets/fake_search.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: const TabBarView(
           children: [
-            Center(child: Text("men screen")),
+            MenGalleryScreen(),
             Center(child: Text("women screen")),
             Center(child: Text("shoes screen")),
             Center(child: Text("bags screen")),

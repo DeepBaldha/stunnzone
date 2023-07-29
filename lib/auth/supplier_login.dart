@@ -139,7 +139,7 @@ class _SupplierLoginState extends State<SupplierLogin> {
                       HaveAccount(
                         onPressed: () {
                           Navigator.pushReplacementNamed(
-                              context, '/supplier_signut');
+                              context, '/supplier_signup');
                         },
                         actionLabel: 'Sign Up',
                         haveAccount: 'Don\'t have account? ',

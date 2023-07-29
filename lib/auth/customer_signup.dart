@@ -125,7 +125,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
         setState(() {
           processing = false;
         });
-        MyMessageHandler.showSnackBar(_scaffoldKey, 'please pick image first');
+        MyMessageHandler.showSnackBar(_scaffoldKey, 'please p ick image first');
       }
     } else {
       setState(() {

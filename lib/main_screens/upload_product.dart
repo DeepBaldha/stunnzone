@@ -7,6 +7,7 @@ import 'package:stunnzone/utilities/categ_list.dart';
 import 'package:stunnzone/widgets/snackbar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as path;
+import 'package:uuid/uuid.dart';
 
 class UploadProductScreen extends StatefulWidget {
   const UploadProductScreen({Key? key}) : super(key: key);
@@ -24,9 +25,12 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
   late int quantity;
   late String proName;
   late String proDesc;
+  late String proId;
+  int? discount = 0;
   String mainCategValue = 'select category';
   String subCategValue = 'subcategory';
   List<String> subCategList = [];
+  bool processing = false;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -39,17 +43,17 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
       final pickedImages = await _picker.pickMultiImage(
           maxHeight: 300, maxWidth: 300, imageQuality: 95);
       setState(() {
-        imagesFileList = pickedImages;
+        imagesFileList = pickedImages!;
       });
     } catch (e) {
       setState(() {
-        // ignore: avoid_print
-        print(_pickedImageError);
+        _pickedImageError = e;
       });
+      print(_pickedImageError);
     }
   }
 
-  Widget previewImage() {
+  Widget previewImages() {
     if (imagesFileList!.isNotEmpty) {
       return ListView.builder(
           itemCount: imagesFileList!.length,
@@ -58,16 +62,13 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
           });
     } else {
       return const Center(
-        child: Text(
-          'you have not \n \n picked images yet !',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18),
-        ),
+        child: Text('you have not \n \n picked images yet !',
+            textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
       );
     }
   }
 
-  void selectMainCateg(String? value) {
+  void selectedMainCateg(String? value) {
     if (value == 'select category') {
       subCategList = [];
     } else if (value == 'men') {
@@ -89,9 +90,9 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
     } else if (value == 'bags') {
       subCategList = bags;
     }
-    print(value.toString());
+    print(value);
     setState(() {
-      mainCategValue = value.toString();
+      mainCategValue = value!;
       subCategValue = 'subcategory';
     });
   }
@@ -99,7 +100,11 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
   Future<void> uploadImages() async {
     if (mainCategValue != 'select category' && subCategValue != 'subcategory') {
       if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
         if (imagesFileList!.isNotEmpty) {
+          setState(() {
+            processing = true;
+          });
           try {
             for (var image in imagesFileList!) {
               firebase_storage.Reference ref = firebase_storage
@@ -116,42 +121,47 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
             print(e);
           }
         } else {
-          MyMessageHandler.showSnackBar(_scaffoldKey, 'Pick images first');
+          MyMessageHandler.showSnackBar(
+              _scaffoldKey, 'please pick images first');
         }
       } else {
-        MyMessageHandler.showSnackBar(_scaffoldKey, 'Some error occurred');
+        MyMessageHandler.showSnackBar(_scaffoldKey, 'please fill all fields');
       }
     } else {
-      MyMessageHandler.showSnackBar(
-          _scaffoldKey, 'Select corresponding category');
+      MyMessageHandler.showSnackBar(_scaffoldKey, 'please select categories');
     }
   }
 
   void uploadData() async {
-    if (imagesUrlList.isEmpty) {
+    if (imagesUrlList.isNotEmpty) {
       CollectionReference productRef =
           FirebaseFirestore.instance.collection('products');
-      await productRef.doc().set({
+
+      proId = const Uuid().v4();
+
+      await productRef.doc(proId).set({
+        'proid': proId,
         'maincateg': mainCategValue,
         'subcateg': subCategValue,
         'price': price,
-        'instoke': quantity,
+        'instock': quantity,
         'proname': proName,
         'prodesc': proDesc,
         'sid': FirebaseAuth.instance.currentUser!.uid,
         'proimages': imagesUrlList,
-        'discount': 0,
+        'discount': discount,
       }).whenComplete(() {
         setState(() {
+          processing = false;
           imagesFileList = [];
           mainCategValue = 'select category';
           subCategList = [];
           imagesUrlList = [];
         });
-        _formKey.currentState!.reset();
+        //_formKey.currentState!.reset();
       });
     } else {
-      print("Hello World");
+      print('no images');
     }
   }
 
@@ -161,7 +171,6 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //double heigth = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return ScaffoldMessenger(
       key: _scaffoldKey,
@@ -182,7 +191,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                         height: width * 0.5,
                         width: width * 0.5,
                         child: imagesFileList != null
-                            ? previewImage()
+                            ? previewImages()
                             : const Center(
                                 child: Text(
                                   'you have not \n \n picked images yet !',
@@ -217,7 +226,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                                       );
                                     }).toList(),
                                     onChanged: (String? value) {
-                                      selectMainCateg(value);
+                                      selectedMainCateg(value);
                                     }),
                               ],
                             ),
@@ -390,14 +399,20 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
               width: 10,
             ),
             FloatingActionButton(
-              onPressed: () {
-                uploadProduct();
-              },
+              onPressed: processing == true
+                  ? null
+                  : () {
+                      uploadProduct();
+                    },
               backgroundColor: Colors.yellow,
-              child: const Icon(
-                Icons.upload,
-                color: Colors.black,
-              ),
+              child: processing == true
+                  ? const CircularProgressIndicator(
+                      color: Colors.black,
+                    )
+                  : const Icon(
+                      Icons.upload,
+                      color: Colors.black,
+                    ),
             ),
           ],
         ),
