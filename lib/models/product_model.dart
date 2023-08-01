@@ -45,6 +45,7 @@ class ProductModel extends StatelessWidget {
                     ),
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         product['price'].toStringAsFixed(2) + (' \$'),

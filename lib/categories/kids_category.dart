@@ -30,7 +30,7 @@ class KidsCategory extends StatelessWidget {
                       children: List.generate(kids.length-1, (index) {
                         return SubcategModel(
                           assetName: 'images/kids/kids$index.jpg',
-                          mainCategName: 'Kids',
+                          mainCategName: 'kids',
                           subCategLabel: kids[index+1],
                           subCategName: kids[index+1],
                         );

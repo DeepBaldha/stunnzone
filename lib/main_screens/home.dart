@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stunnzone/galleries/bags_gallery.dart';
 import 'package:stunnzone/galleries/men_gallery.dart';
+import 'package:stunnzone/galleries/shoes_gallery.dart';
 import 'package:stunnzone/galleries/women_gallerry.dart';
 import 'package:stunnzone/widgets/fake_search.dart';
 
@@ -23,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
           bottom: const TabBar(
             isScrollable: true,
             indicatorColor: Colors.yellow,
-            indicatorWeight: 8,
+            indicatorWeight: 6,
             tabs: [
               RepeatedTab(label: "Men"),
               RepeatedTab(label: "Women"),
@@ -41,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             MenGalleryScreen(),
             WomenGalleryScreen(),
-            Center(child: Text("shoes screen")),
-            Center(child: Text("bags screen")),
+            ShoesGalleryScreen(),
+            BagsGalleryScreen(),
             Center(child: Text("electronics screen")),
             Center(child: Text("accessories screen")),
             Center(child: Text("home & garden screen")),
