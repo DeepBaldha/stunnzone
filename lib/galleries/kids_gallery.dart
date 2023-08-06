@@ -4,17 +4,17 @@ import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import 'package:stunnzone/models/product_model.dart';
 
-class MenGalleryScreen extends StatefulWidget {
-  const MenGalleryScreen({Key? key}) : super(key: key);
+class KidsGalleryScreen extends StatefulWidget {
+  const KidsGalleryScreen({Key? key}) : super(key: key);
 
   @override
-  State<MenGalleryScreen> createState() => _MenGalleryScreenState();
+  State<KidsGalleryScreen> createState() => _KidsGalleryScreenState();
 }
 
-class _MenGalleryScreenState extends State<MenGalleryScreen> {
+class _KidsGalleryScreenState extends State<KidsGalleryScreen> {
   final Stream<QuerySnapshot> _productStream = FirebaseFirestore.instance
       .collection('products')
-      .where('maincateg', isEqualTo: 'men')
+      .where('maincateg', isEqualTo: 'kids')
       .snapshots();
 
   @override

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:stunnzone/galleries/accessories_gallery.dart';
 import 'package:stunnzone/galleries/bags_gallery.dart';
+import 'package:stunnzone/galleries/beauty_gallery.dart';
+import 'package:stunnzone/galleries/electronics_gallery.dart';
+import 'package:stunnzone/galleries/home_garden_gallery.dart';
+import 'package:stunnzone/galleries/kids_gallery.dart';
 import 'package:stunnzone/galleries/men_gallery.dart';
 import 'package:stunnzone/galleries/shoes_gallery.dart';
 import 'package:stunnzone/galleries/women_gallerry.dart';
@@ -45,11 +50,11 @@ class _HomeScreenState extends State<HomeScreen> {
             WomenGalleryScreen(),
             ShoesGalleryScreen(),
             BagsGalleryScreen(),
-            Center(child: Text("electronics screen")),
-            Center(child: Text("accessories screen")),
-            Center(child: Text("home & garden screen")),
-            Center(child: Text("kids screen")),
-            Center(child: Text("beauty screen")),
+            ElectronicsGalleryScreen(),
+            AccessoriesGalleryScreen(),
+            HomeGardenGalleryScreen(),
+            KidsGalleryScreen(),
+            BeautyGalleryScreen(),
           ],
         ),
       ),

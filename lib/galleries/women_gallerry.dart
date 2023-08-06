@@ -47,18 +47,21 @@ class _WomenGalleryScreenState extends State<WomenGalleryScreen> {
           );
         }
 
-        return SingleChildScrollView(
-          child: Container(
-            color: Colors.grey.shade200,
-            child: StaggeredGridView.countBuilder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: snapshot.data!.docs.length,
-              crossAxisCount: 2,
-              itemBuilder: (context, index) {
-                return ProductModel(product: snapshot.data!.docs[index],);
-              },
-              staggeredTileBuilder: (context) => const StaggeredTile.fit(1),
+        return Container(
+          color: Colors.grey.shade200,
+          child: SingleChildScrollView(
+            child: Container(
+              color: Colors.grey.shade200,
+              child: StaggeredGridView.countBuilder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: snapshot.data!.docs.length,
+                crossAxisCount: 2,
+                itemBuilder: (context, index) {
+                  return ProductModel(product: snapshot.data!.docs[index],);
+                },
+                staggeredTileBuilder: (context) => const StaggeredTile.fit(1),
+              ),
             ),
           ),
         );

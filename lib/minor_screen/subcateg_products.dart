@@ -24,10 +24,10 @@ class _SubCategProductsState extends State<SubCategProducts> {
   Widget build(BuildContext context) {
     final Stream<QuerySnapshot> _productStream = FirebaseFirestore.instance
         .collection('products')
-        .where('maincateg', isEqualTo: widget.maincategName)
+        .where('maincateg', isEqualTo: widget.maincategName).where('subcateg',isEqualTo: widget.subcategName)
         .snapshots();
     return Scaffold(
-
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -40,7 +40,6 @@ class _SubCategProductsState extends State<SubCategProducts> {
           if (snapshot.hasError) {
             return const Text('Something went wrong');
           }
-
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),

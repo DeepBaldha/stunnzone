@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class YellowButton extends StatelessWidget {
   final Function() onPressed;
   final double width;
