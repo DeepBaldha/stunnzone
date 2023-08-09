@@ -1,18 +1,24 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stunnzone/auth/customer_login.dart';
 import 'package:stunnzone/auth/customer_signup.dart';
 import 'package:stunnzone/main_screens/cart.dart';
 import 'package:stunnzone/main_screens/customer_home.dart';
 import 'package:stunnzone/main_screens/supplier_home.dart';
 import 'package:stunnzone/main_screens/welcome.dart';
+import 'package:stunnzone/providers/cart_provider.dart';
+import 'package:stunnzone/providers/wish_provider.dart';
 import 'auth/supplier_login.dart';
 import 'auth/supplier_signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => Cart()),
+    ChangeNotifierProvider(create: (_) => Wish()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

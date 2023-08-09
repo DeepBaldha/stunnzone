@@ -158,7 +158,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
           subCategList = [];
           imagesUrlList = [];
         });
-        //_formKey.currentState!.reset();
+        _formKey.currentState!.reset();
       });
     } else {
       print('no images');

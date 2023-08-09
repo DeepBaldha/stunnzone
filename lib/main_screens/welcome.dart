@@ -30,8 +30,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool processing = false;
-  CollectionReference customer =
-      FirebaseFirestore.instance.collection('customers');
+  CollectionReference anonymous =
+      FirebaseFirestore.instance.collection('anonymous');
   late String _uid;
 
   @override
@@ -243,7 +243,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                     .signInAnonymously()
                                     .whenComplete(() async {
                                   _uid = FirebaseAuth.instance.currentUser!.uid;
-                                  await customer.doc(_uid).set({
+                                  await anonymous.doc(_uid).set({
                                     'name': '',
                                     'email': '',
                                     'profileImage': '',

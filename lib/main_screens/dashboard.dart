@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:stunnzone/dashboard_components/edit_business.dart';
 import 'package:stunnzone/dashboard_components/manage_products.dart';
@@ -5,6 +7,7 @@ import 'package:stunnzone/dashboard_components/my_store.dart';
 import 'package:stunnzone/dashboard_components/suppl_balance.dart';
 import 'package:stunnzone/dashboard_components/suppl_orders.dart';
 import 'package:stunnzone/dashboard_components/suppl_statics.dart';
+import 'package:stunnzone/main_screens/visit_store.dart';
 import 'package:stunnzone/widgets/appbar_widgets.dart';
 
 List<String> label = [
@@ -17,7 +20,7 @@ List<String> label = [
 ];
 
 List<Widget> pages = [
-  const MyStore(),
+  VisitStore(suppId: FirebaseAuth.instance.currentUser!.uid),
   const SupplierOrders(),
   const EditBusiness(),
   const ManageProducts(),
@@ -49,8 +52,7 @@ class DashboardScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushReplacementNamed(
-                  context, '/welcome_screen');
+              Navigator.pushReplacementNamed(context, '/welcome_screen');
             },
             icon: const Icon(
               Icons.logout,

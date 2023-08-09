@@ -6,6 +6,7 @@ import 'package:stunnzone/customer_screens/wishlist.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String documentId;
+
   const ProfileScreen({Key? key, required this.documentId}) : super(key: key);
 
   @override
@@ -17,6 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       FirebaseFirestore.instance.collection('customers');
   CollectionReference anonymous =
       FirebaseFirestore.instance.collection('anonymous');
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
@@ -36,8 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            return /* Text("Full Name: ${data['full_name']} ${data['last_name']}"); */
-                Scaffold(
+            return Scaffold(
               backgroundColor: Colors.grey.shade300,
               body: Stack(
                 children: [
@@ -78,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         top: 25, left: 30),
                                     child: Row(
                                       children: [
-                                        data['profileimage'] == ''
+                                        data['profileimage'] == null
                                             ? const CircleAvatar(
                                                 radius: 50,
                                                 backgroundImage: AssetImage(
