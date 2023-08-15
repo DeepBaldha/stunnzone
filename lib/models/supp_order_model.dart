@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class SupplierOrderModel extends StatelessWidget {
   final dynamic order;
+
   const SupplierOrderModel({Key? key, required this.order}) : super(key: key);
 
   @override
@@ -24,36 +25,36 @@ class SupplierOrderModel extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 15),
                   child: Container(
                     constraints:
-                    const BoxConstraints(maxHeight: 80, maxWidth: 80),
+                        const BoxConstraints(maxHeight: 80, maxWidth: 80),
                     child: Image.network(order['orderimage']),
                   ),
                 ),
                 Flexible(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          order['ordername'],
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey.shade600,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(('\$ ') +
-                                  (order['orderprice'].toStringAsFixed(2))),
-                              Text(('x ') + (order['orderqty'].toString()))
-                            ],
-                          ),
-                        )
-                      ],
-                    ))
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      order['ordername'],
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(('\$ ') +
+                              (order['orderprice'].toStringAsFixed(2))),
+                          Text(('x ') + (order['orderqty'].toString()))
+                        ],
+                      ),
+                    )
+                  ],
+                ))
               ],
             ),
           ),
@@ -73,105 +74,98 @@ class SupplierOrderModel extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        ('Name: ') + (order['custname']),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      Text(
-                        ('Phone No.: ') + (order['phone']),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      Text(
-                        ('Email Address: ') + (order['email']),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      Text(
-                        ('Address: ') + (order['address']),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            ('Payment Status: '),
-                            style: TextStyle(fontSize: 15),
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ('Name: ') + (order['custname']),
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    Text(
+                      ('Phone No.: ') + (order['phone']),
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    Text(
+                      ('Email Address: ') + (order['email']),
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    Text(
+                      ('Address: ') + (order['address']),
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          ('Payment Status: '),
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        Text(
+                          (order['paymentstatus']),
+                          style: const TextStyle(
+                              fontSize: 15, color: Colors.purple),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          ('Delivery status: '),
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        Text(
+                          (order['deliverystatus']),
+                          style: const TextStyle(
+                              fontSize: 15, color: Colors.green),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          ('Order Date: '),
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        Text(
+                          (DateFormat('yyyy-MM-dd')
+                              .format(order['orderdate'].toDate())
+                              .toString()),
+                          style: const TextStyle(
+                              fontSize: 15, color: Colors.green),
+                        ),
+                      ],
+                    ),
+                    order['deliverystatus'] == 'delivered'
+                        ? const Text('This order has been alreay delivered')
+                        : Row(
+                            children: [
+                              const Text(
+                                ('Change Delivery Status To: '),
+                                style: TextStyle(fontSize: 15),
+                              ),
+                              order['deliverystatus'] == 'preparing'
+                                  ? TextButton(
+                                      onPressed: () {
+                                        /*DatePicker.showDatePicker(context,
+                                            minTime: DateTime.now(),
+                                            maxTime: DateTime.now()
+                                                .add(const Duration(days: 365)),
+                                            onConfirm: (date) {});*/
+                                      },
+                                      child: const Text('shipping ?'))
+                                  : TextButton(
+                                      onPressed: () async {
+                                        await FirebaseFirestore.instance
+                                            .collection('orders')
+                                            .doc(order['orderid'])
+                                            .update({
+                                          'deliverystatus': 'delivered',
+                                        });
+                                      },
+                                      child: const Text('delivered ?'))
+                            ],
                           ),
-                          Text(
-                            (order['paymentstatus']),
-                            style: const TextStyle(
-                                fontSize: 15, color: Colors.purple),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            ('Delivery status: '),
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          Text(
-                            (order['deliverystatus']),
-                            style: const TextStyle(
-                                fontSize: 15, color: Colors.green),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            ('Order Date: '),
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          Text(
-                            (DateFormat('yyyy-MM-dd')
-                                .format(order['orderdate'].toDate())
-                                .toString()),
-                            style: const TextStyle(
-                                fontSize: 15, color: Colors.green),
-                          ),
-                        ],
-                      ),
-                      order['deliverystatus'] == 'delivered'
-                          ? const Text('This order has been alreay delivered')
-                          : Row(
-                        children: [
-                          const Text(
-                            ('Change Delivery Status To: '),
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          order['deliverystatus'] == 'preparing'
-                              ? TextButton(
-                              onPressed: () {
-                                /*DatePicker.showDatePicker(context,
-                                    minTime: DateTime.now(),
-                                    maxTime: DateTime.now().add(
-                                        const Duration(days: 365)),
-                                    onConfirm: (date) async {
-                                      await FirebaseFirestore.instance
-                                          .collection('orders')
-                                          .doc(order['orderid'])
-                                          .update({
-                                        'deliverystatus': 'shipping',
-                                        'deliverydate': date,
-                                      });
-                                    });*/
-                              },
-                              child: const Text('shipping ?'))
-                              : TextButton(
-                              onPressed: () async {
-                                await FirebaseFirestore.instance
-                                    .collection('orders')
-                                    .doc(order['orderid'])
-                                    .update({
-                                  'deliverystatus': 'delivered',
-                                });
-                              },
-                              child: const Text('delivered ?'))
-                        ],
-                      ),
-                    ]),
+                  ],
+                ),
               ),
             )
           ],

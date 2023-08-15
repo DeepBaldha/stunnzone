@@ -17,10 +17,10 @@ class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);
 
   @override
-  _PaymentScreenState createState() => _PaymentScreenState();
+  PaymentScreenState createState() => PaymentScreenState();
 }
 
-class _PaymentScreenState extends State<PaymentScreen> {
+class PaymentScreenState extends State<PaymentScreen> {
   int selectedValue = 1;
   late String orderId;
   CollectionReference customers =
@@ -323,7 +323,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                     Navigator.pushAndRemoveUntil(
                                                         context,
                                                         MaterialPageRoute(
-                                                            builder: (context) => CustomerHomeScreen()
+                                                            builder: (context) => const CustomerHomeScreen()
                                                         ),
                                                         ModalRoute.withName("/customer_home")
                                                     );
