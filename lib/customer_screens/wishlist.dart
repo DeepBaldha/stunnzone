@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stunnzone/providers/cart_provider.dart';
-import 'package:stunnzone/providers/wish_provider.dart';
-import 'package:stunnzone/widgets/alert_dialog.dart';
-import 'package:stunnzone/widgets/appbar_widgets.dart';
+
+import '../models/wish_model.dart';
+import '../providers/wish_provider.dart';
+import '../widgets/alert_dialog.dart';
+import '../widgets/appbar_widgets.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({Key? key}) : super(key: key);
 
   @override
-  State<WishlistScreen> createState() => _WishlistScreenState();
+  _WishlistScreenState createState() => _WishlistScreenState();
 }
 
 class _WishlistScreenState extends State<WishlistScreen> {
+  final GlobalKey<ScaffoldMessengerState> scaffoldKey =
+  GlobalKey<ScaffoldMessengerState>();
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -23,30 +26,29 @@ class _WishlistScreenState extends State<WishlistScreen> {
             elevation: 0,
             backgroundColor: Colors.white,
             leading: const AppBarBackButton(),
-            title: const AppBarTItle(title: 'Wish'),
+            title: const AppBarTItle(title: 'Wishlist'),
             actions: [
-              context.watch<Cart>().getItems.isEmpty
+              context.watch<Wish>().getWishItems.isEmpty
                   ? const SizedBox()
                   : IconButton(
-                      onPressed: () {
-                        MyAlertdialog.showMyDialg(
-                            context: context,
-                            title: 'Clear Cart',
-                            content: 'Are you sure to clear cart ???',
-                            tabYes: () {
-                              context.read<Cart>().clearCart();
-                              Navigator.pop(context);
-                            });
-                      },
-                      icon: const Icon(
-                        Icons.delete_forever,
-                        color: Colors.black,
-                      ),
-                    ),
+                  onPressed: () {
+                    MyAlertdialog.showMyDialg(
+                        context: context,
+                        title: 'Clear Wishlist',
+                        content: 'Are you sure to clear Wishlist ?',
+                        tabYes: () {
+                          context.read<Wish>().clearWishlist();
+                          Navigator.pop(context);
+                        });
+                  },
+                  icon: const Icon(
+                    Icons.delete_forever,
+                    color: Colors.black,
+                  ))
             ],
           ),
           body: context.watch<Wish>().getWishItems.isNotEmpty
-              ? const WishItem()
+              ? const WishItems()
               : const EmptyWishlist(),
         ),
       ),
@@ -56,15 +58,15 @@ class _WishlistScreenState extends State<WishlistScreen> {
 
 class EmptyWishlist extends StatelessWidget {
   const EmptyWishlist({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: const [
           Text(
             'Your Wishlist Is Empty !',
             style: TextStyle(fontSize: 30),
@@ -75,88 +77,22 @@ class EmptyWishlist extends StatelessWidget {
   }
 }
 
-class WishItem extends StatelessWidget {
-  const WishItem({
-    super.key,
-  });
+class WishItems extends StatelessWidget {
+  const WishItems({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Wish>(builder: (context, wish, child) {
-      return ListView.builder(
-          itemCount: wish.count,
-          itemBuilder: (context, index) {
-            final product = wish.getWishItems[index];
-            return Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Card(
-                child: SizedBox(
-                  height: 100,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: 100,
-                        width: 120,
-                        child: Image.network(product.imagesUrl.first),
-                      ),
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                product.name,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey.shade700),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    product.price.toStringAsFixed(2),
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            context
-                                                .read<Wish>()
-                                                .removeItem(product);
-                                          },
-                                          icon:
-                                              const Icon(Icons.delete_forever)),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                              Icons.add_shopping_cart))
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
-          });
-    });
+    return Consumer<Wish>(
+      builder: (context, wish, child) {
+        return ListView.builder(
+            itemCount: wish.count,
+            itemBuilder: (context, index) {
+              final product = wish.getWishItems[index];
+              return WishlistModel(
+                product: product,
+              );
+            });
+      },
+    );
   }
 }

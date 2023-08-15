@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       length: 9,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           elevation: 0,
           backgroundColor: Colors.white,
           title: const FakeSearch(),

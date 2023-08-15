@@ -13,7 +13,7 @@ class Wish extends ChangeNotifier {
   }
 
 
-  void addWishItem(
+  Future<void> addWishItem(
       String name,
       double price,
       int qty,
@@ -21,7 +21,7 @@ class Wish extends ChangeNotifier {
       List imagesUrl,
       String documentId,
       String suppId,
-      ) {
+      ) async {
     final product = Product(
         name: name,
         price: price,
@@ -42,6 +42,11 @@ class Wish extends ChangeNotifier {
 
   void clearWishlist(){
     _list.clear();
+    notifyListeners();
+  }
+
+  void removeThis(String id) {
+    _list.removeWhere((element) => element.documentId == id);
     notifyListeners();
   }
 
