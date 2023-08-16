@@ -1,3 +1,4 @@
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -145,11 +146,20 @@ class SupplierOrderModel extends StatelessWidget {
                               order['deliverystatus'] == 'preparing'
                                   ? TextButton(
                                       onPressed: () {
-                                        /*DatePicker.showDatePicker(context,
+                                        DatePicker.showDatePicker(context,
                                             minTime: DateTime.now(),
                                             maxTime: DateTime.now()
-                                                .add(const Duration(days: 365)),
-                                            onConfirm: (date) {});*/
+                                                .add(Duration(days: 365)),
+                                            onConfirm: (date) async {
+                                          print('1');
+                                          await FirebaseFirestore.instance
+                                              .collection('orders')
+                                              .doc(order['orderid'])
+                                              .update({
+                                            'deliverystatus': 'shipping',
+                                            'deliverydate': date
+                                          });
+                                        });
                                       },
                                       child: const Text('shipping ?'))
                                   : TextButton(

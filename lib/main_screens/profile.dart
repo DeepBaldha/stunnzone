@@ -161,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const CustomerOrder()));
+                                                    const CustomerOrders()));
                                       },
                                       child: SizedBox(
                                         height: 40,
@@ -243,14 +243,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ? 'example@email.com'
                                                   : data['email'],
                                               title: 'Email Address'),
-                                          YellowDivider(),
+                                          const YellowDivider(),
                                           RepeatedListTile(
                                               icon: Icons.phone,
                                               subTitle: data['phone'] == ''
                                                   ? 'example: +11111'
                                                   : data['phone'],
                                               title: 'Phone No.'),
-                                          YellowDivider(),
+                                          const YellowDivider(),
                                           RepeatedListTile(
                                               icon: Icons.location_pin,
                                               subTitle: data['address'] == ''

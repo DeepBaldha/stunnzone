@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CustomerOrderModel extends StatelessWidget {
   const CustomerOrderModel({
@@ -33,8 +34,7 @@ class CustomerOrderModel extends StatelessWidget {
                 ),
                 Flexible(
                   child: Column(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
                         order['ordername'],
@@ -48,13 +48,11 @@ class CustomerOrderModel extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               ('\$ ') +
-                                  (order['orderprice']
-                                      .toStringAsFixed(2)),
+                                  (order['orderprice'].toStringAsFixed(2)),
                               style: const TextStyle(fontSize: 18),
                             ),
                             Text(
@@ -72,10 +70,7 @@ class CustomerOrderModel extends StatelessWidget {
           ),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const Text('see More..'),
-              Text(order['deliverystatus'])
-            ],
+            children: [const Text('see More..'), Text(order['deliverystatus'])],
           ),
           children: [
             Container(
@@ -135,29 +130,30 @@ class CustomerOrderModel extends StatelessWidget {
                     ),
                     order['deliverystatus'] == 'shipping'
                         ? Text(
-                      'Estimated Delivery date: ${order['deliverydate']}',
-                      style: const TextStyle(fontSize: 16),
-                    )
+                            ('Estimated Delivery date: ') +
+                                (DateFormat('yyyy-MM-dd')
+                                    .format(order['deliverydate'].toDate()))
+                                    .toString(),
+                            style: const TextStyle(fontSize: 16),
+                          )
                         : const Text(''),
                     order['deliverystatus'] == 'delivered' &&
-                        order['orderreview'] == false
+                            order['orderreview'] == false
                         ? TextButton(
-                        onPressed: () {},
-                        child: const Text('Write review'))
+                            onPressed: () {}, child: const Text('Write review'))
                         : const Text(''),
                     order['deliverystatus'] == 'delivered' &&
-                        order['orderreview'] == true
+                            order['orderreview'] == true
                         ? const Row(
-                      children: [
-                        Icon(
-                          Icons.check,
-                          color: Colors.blue,
-                        ),
-                        Text('Review Added',
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic))
-                      ],
-                    )
+                            children: [
+                              Icon(
+                                Icons.check,
+                                color: Colors.blue,
+                              ),
+                              Text('Review Added',
+                                  style: TextStyle(fontStyle: FontStyle.italic))
+                            ],
+                          )
                         : const Text(''),
                   ],
                 ),
