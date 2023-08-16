@@ -20,7 +20,7 @@ class _VisitStoreState extends State<VisitStore> {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> _productStream = FirebaseFirestore.instance
+    final Stream<QuerySnapshot> productStream = FirebaseFirestore.instance
         .collection('products')
         .where('sid', isEqualTo: widget.suppId)
         .snapshots();
@@ -144,7 +144,7 @@ class _VisitStoreState extends State<VisitStore> {
             body: Padding(
               padding: const EdgeInsets.all(8.0),
               child: StreamBuilder<QuerySnapshot>(
-                stream: _productStream,
+                stream: productStream,
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {

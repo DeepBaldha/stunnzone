@@ -12,12 +12,13 @@ class PlaceOrderScreen extends StatefulWidget {
   const PlaceOrderScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _PlaceOrderScreenState createState() => _PlaceOrderScreenState();
 }
 
 class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
   CollectionReference customers =
-  FirebaseFirestore.instance.collection('customers');
+      FirebaseFirestore.instance.collection('customers');
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +37,13 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Material(
                 child: Center(
-                  child: CircularProgressIndicator(),
-                ));
+              child: CircularProgressIndicator(),
+            ));
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
-            snapshot.data!.data() as Map<String, dynamic>;
+                snapshot.data!.data() as Map<String, dynamic>;
             return Material(
               color: Colors.grey.shade200,
               child: SafeArea(
@@ -101,18 +102,18 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                                           decoration: BoxDecoration(
                                               border: Border.all(width: 0.3),
                                               borderRadius:
-                                              BorderRadius.circular(15)),
+                                                  BorderRadius.circular(15)),
                                           child: Row(
                                             children: [
                                               ClipRRect(
                                                   borderRadius:
-                                                  const BorderRadius.only(
-                                                      topLeft:
-                                                      Radius.circular(
-                                                          15),
-                                                      bottomLeft:
-                                                      Radius.circular(
-                                                          15)),
+                                                      const BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  15),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  15)),
                                                   child: SizedBox(
                                                     height: 100,
                                                     width: 100,
@@ -122,40 +123,40 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                                               Flexible(
                                                 child: Column(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceAround,
+                                                      MainAxisAlignment
+                                                          .spaceAround,
                                                   children: [
                                                     Text(
                                                       order.name,
                                                       maxLines: 2,
                                                       overflow:
-                                                      TextOverflow.ellipsis,
+                                                          TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                           fontSize: 16,
                                                           fontWeight:
-                                                          FontWeight.w600,
+                                                              FontWeight.w600,
                                                           color: Colors
                                                               .grey.shade600),
                                                     ),
                                                     Padding(
                                                       padding: const EdgeInsets
-                                                          .symmetric(
+                                                              .symmetric(
                                                           vertical: 4,
                                                           horizontal: 12),
                                                       child: Row(
                                                         mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                         children: [
                                                           Text(
                                                             order.price
                                                                 .toStringAsFixed(
-                                                                2),
+                                                                    2),
                                                             style: TextStyle(
                                                                 fontSize: 16,
                                                                 fontWeight:
-                                                                FontWeight
-                                                                    .w600,
+                                                                    FontWeight
+                                                                        .w600,
                                                                 color: Colors
                                                                     .grey
                                                                     .shade600),
@@ -165,8 +166,8 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                                                             style: TextStyle(
                                                                 fontSize: 16,
                                                                 fontWeight:
-                                                                FontWeight
-                                                                    .w600,
+                                                                    FontWeight
+                                                                        .w600,
                                                                 color: Colors
                                                                     .grey
                                                                     .shade600),

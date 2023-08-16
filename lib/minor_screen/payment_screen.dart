@@ -317,16 +317,23 @@ class PaymentScreenState extends State<PaymentScreen> {
                                                         });
                                                       });
                                                     }
-                                                    context
-                                                        .read<Cart>()
-                                                        .clearCart();
-                                                    Navigator.pushAndRemoveUntil(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) => const CustomerHomeScreen()
-                                                        ),
-                                                        ModalRoute.withName("/customer_home")
-                                                    );
+
+                                                    await Future.delayed(
+                                                            const Duration(
+                                                                microseconds:
+                                                                    100))
+                                                        .whenComplete(() {
+                                                      context
+                                                          .read<Cart>()
+                                                          .clearCart();
+                                                      Navigator.pushAndRemoveUntil(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const CustomerHomeScreen()),
+                                                          ModalRoute.withName(
+                                                              "/customer_home"));
+                                                    });
                                                   },
                                                   width: 0.9)
                                             ]),

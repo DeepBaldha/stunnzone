@@ -26,7 +26,7 @@ class CustomerOrderModel extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 15),
-                  child: Container(
+                  child: SizedBox(
                     width: 80,
                     height: 80,
                     child: Image.network(order['orderimage']),
@@ -132,7 +132,7 @@ class CustomerOrderModel extends StatelessWidget {
                         ? Text(
                             ('Estimated Delivery date: ') +
                                 (DateFormat('yyyy-MM-dd')
-                                    .format(order['deliverydate'].toDate()))
+                                        .format(order['deliverydate'].toDate()))
                                     .toString(),
                             style: const TextStyle(fontSize: 16),
                           )

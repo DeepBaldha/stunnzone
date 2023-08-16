@@ -149,9 +149,8 @@ class SupplierOrderModel extends StatelessWidget {
                                         DatePicker.showDatePicker(context,
                                             minTime: DateTime.now(),
                                             maxTime: DateTime.now()
-                                                .add(Duration(days: 365)),
+                                                .add(const Duration(days: 365)),
                                             onConfirm: (date) async {
-                                          print('1');
                                           await FirebaseFirestore.instance
                                               .collection('orders')
                                               .doc(order['orderid'])

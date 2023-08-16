@@ -10,12 +10,13 @@ class WishlistScreen extends StatefulWidget {
   const WishlistScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _WishlistScreenState createState() => _WishlistScreenState();
 }
 
 class _WishlistScreenState extends State<WishlistScreen> {
   final GlobalKey<ScaffoldMessengerState> scaffoldKey =
-  GlobalKey<ScaffoldMessengerState>();
+      GlobalKey<ScaffoldMessengerState>();
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -31,20 +32,20 @@ class _WishlistScreenState extends State<WishlistScreen> {
               context.watch<Wish>().getWishItems.isEmpty
                   ? const SizedBox()
                   : IconButton(
-                  onPressed: () {
-                    MyAlertdialog.showMyDialg(
-                        context: context,
-                        title: 'Clear Wishlist',
-                        content: 'Are you sure to clear Wishlist ?',
-                        tabYes: () {
-                          context.read<Wish>().clearWishlist();
-                          Navigator.pop(context);
-                        });
-                  },
-                  icon: const Icon(
-                    Icons.delete_forever,
-                    color: Colors.black,
-                  ))
+                      onPressed: () {
+                        MyAlertdialog.showMyDialg(
+                            context: context,
+                            title: 'Clear Wishlist',
+                            content: 'Are you sure to clear Wishlist ?',
+                            tabYes: () {
+                              context.read<Wish>().clearWishlist();
+                              Navigator.pop(context);
+                            });
+                      },
+                      icon: const Icon(
+                        Icons.delete_forever,
+                        color: Colors.black,
+                      ))
             ],
           ),
           body: context.watch<Wish>().getWishItems.isNotEmpty
@@ -63,10 +64,10 @@ class EmptyWishlist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Text(
             'Your Wishlist Is Empty !',
             style: TextStyle(fontSize: 30),

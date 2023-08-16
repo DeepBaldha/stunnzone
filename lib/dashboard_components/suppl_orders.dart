@@ -29,7 +29,7 @@ class SupplierOrders extends StatelessWidget {
                 RepeatedTab(label: 'Delivered'),
               ]),
         ),
-        body: TabBarView(children: [
+        body: const TabBarView(children: [
           Preparing(),
           Shipping(),
           Delivered(),
@@ -48,9 +48,9 @@ class RepeatedTab extends StatelessWidget {
     return Tab(
       child: Center(
           child: Text(
-            label,
-            style: const TextStyle(color: Colors.grey),
-          )),
+        label,
+        style: const TextStyle(color: Colors.grey),
+      )),
     );
   }
 }

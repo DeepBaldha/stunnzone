@@ -62,7 +62,7 @@ class StaticsScreen extends StatelessWidget {
                     value: totalPrice,
                     decimal: 2,
                   ),
-                  SizedBox(height: 20)
+                  const SizedBox(height: 20)
                 ],
               ),
             ),
@@ -133,8 +133,8 @@ class _AnimatedCounterState extends State<AnimatedCounter>
 
   @override
   void initState() {
-    _controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 1500));
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1500));
     _animation = _controller;
     setState(() {
       _animation = Tween(begin: _animation.value, end: widget.count)

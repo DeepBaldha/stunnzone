@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:stunnzone/dashboard_components/edit_business.dart';
 import 'package:stunnzone/dashboard_components/manage_products.dart';
-import 'package:stunnzone/dashboard_components/my_store.dart';
 import 'package:stunnzone/dashboard_components/suppl_balance.dart';
 import 'package:stunnzone/dashboard_components/suppl_orders.dart';
 import 'package:stunnzone/dashboard_components/suppl_statics.dart';

@@ -12,6 +12,7 @@ class CartScreen extends StatefulWidget {
   const CartScreen({Key? key, this.back}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CartScreenState createState() => _CartScreenState();
 }
 
@@ -32,20 +33,20 @@ class _CartScreenState extends State<CartScreen> {
               context.watch<Cart>().getItems.isEmpty
                   ? const SizedBox()
                   : IconButton(
-                  onPressed: () {
-                    MyAlertdialog.showMyDialg(
-                        context: context,
-                        title: 'Clear Cart',
-                        content: 'Are you sure to clear cart ?',
-                        tabYes: () {
-                          context.read<Cart>().clearCart();
-                          Navigator.pop(context);
-                        });
-                  },
-                  icon: const Icon(
-                    Icons.delete_forever,
-                    color: Colors.black,
-                  ))
+                      onPressed: () {
+                        MyAlertdialog.showMyDialg(
+                            context: context,
+                            title: 'Clear Cart',
+                            content: 'Are you sure to clear cart ?',
+                            tabYes: () {
+                              context.read<Cart>().clearCart();
+                              Navigator.pop(context);
+                            });
+                      },
+                      icon: const Icon(
+                        Icons.delete_forever,
+                        color: Colors.black,
+                      ))
             ],
           ),
           body: context.watch<Cart>().getItems.isNotEmpty
@@ -81,12 +82,12 @@ class _CartScreenState extends State<CartScreen> {
                     onPressed: total == 0.0
                         ? null
                         : () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                              const PlaceOrderScreen()));
-                    },
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PlaceOrderScreen()));
+                          },
                     child: const Text('CHECK OUT'),
                   ),
                 )

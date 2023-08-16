@@ -22,9 +22,10 @@ class SubCategProducts extends StatefulWidget {
 class _SubCategProductsState extends State<SubCategProducts> {
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> _productStream = FirebaseFirestore.instance
+    final Stream<QuerySnapshot> productStream = FirebaseFirestore.instance
         .collection('products')
-        .where('maincateg', isEqualTo: widget.maincategName).where('subcateg',isEqualTo: widget.subcategName)
+        .where('maincateg', isEqualTo: widget.maincategName)
+        .where('subcateg', isEqualTo: widget.subcategName)
         .snapshots();
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
@@ -35,7 +36,7 @@ class _SubCategProductsState extends State<SubCategProducts> {
         title: AppBarTItle(title: widget.subcategName),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _productStream,
+        stream: productStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('Something went wrong');
@@ -70,7 +71,9 @@ class _SubCategProductsState extends State<SubCategProducts> {
                 itemCount: snapshot.data!.docs.length,
                 crossAxisCount: 2,
                 itemBuilder: (context, index) {
-                  return ProductModel(product: snapshot.data!.docs[index],);
+                  return ProductModel(
+                    product: snapshot.data!.docs[index],
+                  );
                 },
                 staggeredTileBuilder: (context) => const StaggeredTile.fit(1),
               ),
@@ -81,4 +84,3 @@ class _SubCategProductsState extends State<SubCategProducts> {
     );
   }
 }
-

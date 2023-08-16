@@ -3,7 +3,7 @@ import 'package:stunnzone/utilities/categ_list.dart';
 import 'package:stunnzone/widgets/categ_widgets.dart';
 
 class AccessoriesCategory extends StatelessWidget {
-  const AccessoriesCategory ({Key? key}) : super(key: key);
+  const AccessoriesCategory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +27,12 @@ class AccessoriesCategory extends StatelessWidget {
                       mainAxisSpacing: 40,
                       crossAxisSpacing: 15,
                       crossAxisCount: 3,
-                      children: List.generate(accessories.length-1, (index) {
+                      children: List.generate(accessories.length - 1, (index) {
                         return SubcategModel(
-                          assetName: 'images/accessories/accessories${index}.jpg',
+                          assetName: 'images/accessories/accessories$index.jpg',
                           mainCategName: 'accessories',
-                          subCategLabel: accessories[index+1],
-                          subCategName: accessories[index+1],
+                          subCategLabel: accessories[index + 1],
+                          subCategName: accessories[index + 1],
                         );
                       }),
                     ),
@@ -51,4 +51,3 @@ class AccessoriesCategory extends StatelessWidget {
     );
   }
 }
-

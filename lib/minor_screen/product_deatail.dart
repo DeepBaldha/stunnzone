@@ -322,8 +322,8 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               showBadge: context.read<Cart>().getItems.isEmpty
                                   ? false
                                   : true,
-                              badgeStyle: BadgeStyle(
-                                padding: const EdgeInsets.all(2),
+                              badgeStyle: const BadgeStyle(
+                                padding: EdgeInsets.all(2),
                                 badgeColor: Colors.yellow,
                               ),
                               badgeContent: Text(

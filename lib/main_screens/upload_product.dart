@@ -36,6 +36,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
 
   List<XFile>? imagesFileList = [];
   List<String> imagesUrlList = [];
+  // ignore: unused_field
   dynamic _pickedImageError;
 
   void pickProductImages() async {
@@ -43,13 +44,12 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
       final pickedImages = await _picker.pickMultiImage(
           maxHeight: 300, maxWidth: 300, imageQuality: 95);
       setState(() {
-        imagesFileList = pickedImages!;
+        imagesFileList = pickedImages;
       });
     } catch (e) {
       setState(() {
         _pickedImageError = e;
       });
-      print(_pickedImageError);
     }
   }
 
@@ -90,7 +90,6 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
     } else if (value == 'bags') {
       subCategList = bags;
     }
-    print(value);
     setState(() {
       mainCategValue = value!;
       subCategValue = 'subcategory';
@@ -117,9 +116,8 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                 });
               });
             }
-          } catch (e) {
-            print(e);
-          }
+            // ignore: empty_catches
+          } catch (e) {}
         } else {
           MyMessageHandler.showSnackBar(
               _scaffoldKey, 'please pick images first');
@@ -160,9 +158,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
         });
         _formKey.currentState!.reset();
       });
-    } else {
-      print('no images');
-    }
+    } else {}
   }
 
   void uploadProduct() async {
@@ -252,7 +248,6 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                                       );
                                     }).toList(),
                                     onChanged: (value) {
-                                      print(value);
                                       setState(() {
                                         subCategValue = value.toString();
                                       });
@@ -476,14 +471,13 @@ extension QuallityValidator on String {
 
 extension PriceValidator on String {
   bool isValidPrice() {
-    return RegExp(r'^((([1-9][0-9]*[\.])||([0][\.]))([0-9]{1,2}))$')
+    return RegExp(r'^((([1-9][0-9]*[.])||([0][\.]))([0-9]{1,2}))$')
         .hasMatch(this);
   }
 }
 
 extension DiscountValidator on String {
   bool isValidDiscount() {
-    return RegExp(r'^([0-9]*)$')
-        .hasMatch(this);
+    return RegExp(r'^([0-9]*)$').hasMatch(this);
   }
 }
