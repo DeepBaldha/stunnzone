@@ -1,17 +1,18 @@
-// ignore_for_file: avoid_print
-
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:stunnzone/main_screens/customer_home.dart';
+import 'package:stunnzone/providers/stripe_id.dart';
 import 'package:uuid/uuid.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
-
+import 'package:flutter_stripe/flutter_stripe.dart';
 import '../providers/cart_provider.dart';
 import '../widgets/appbar_widgets.dart';
 import '../widgets/yellow_button.dart';
+import 'package:http/http.dart' as http;
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);
@@ -223,7 +224,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                       child: YellowButton(
                         label: 'Confirm ${totalPaid.toStringAsFixed(2)} USD',
                         width: 1,
-                        onPressed: () {
+                        onPressed: () async {
                           if (selectedValue == 1) {
                             showModalBottomSheet(
                                 context: context,
@@ -340,6 +341,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                                       ),
                                     ));
                           } else if (selectedValue == 2) {
+                            await makePayment();
                             print('visa');
                           } else if (selectedValue == 3) {
                             print('paypal');
@@ -357,4 +359,63 @@ class PaymentScreenState extends State<PaymentScreen> {
           );
         });
   }
+
+
+  Future<void> makePayment() async {
+    try {
+      var paymentIntent = await createPaymentIntent('10000', 'USD');
+
+      var gpay = const PaymentSheetGooglePay(merchantCountryCode: "USA",
+          currencyCode: "USD",
+          testEnv: true);
+
+      await Stripe.instance
+          .initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+              paymentIntentClientSecret: paymentIntent![
+              'client_secret'], //Gotten from payment intent
+              style: ThemeMode.light,
+              merchantDisplayName: 'Abhi',
+              googlePay: gpay))
+          .then((value) {});
+
+      //STEP 3: Display Payment sheet
+      displayPaymentSheet();
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) {
+        print("Payment Successfully");
+      });
+    } catch (e) {
+      print('$e');
+    }
+  }
+
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      Map<String, dynamic> body = {
+        'amount': amount,
+        'currency': currency,
+        'payment_method_types[]':'card',
+      };
+
+      var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer $stripeSecretKey',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      return json.decode(response.body);
+    } catch (e) {
+      print(e);
+    }
+  }
+
 }

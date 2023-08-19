@@ -52,6 +52,10 @@ dependencies:
   flutter_datetime_picker_plus: ^2.0.1
   collection: ^1.17.1
   path: ^1.8.3
+  flutter_stripe: ^9.3.0
+  http: ^1.1.0
+  flutter_rating_bar: ^4.0.1
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,14 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stunnzone/widgets/yellow_button.dart';
 
-class CustomerOrderModel extends StatelessWidget {
+class CustomerOrderModel extends StatefulWidget {
   const CustomerOrderModel({
     super.key,
     required this.order,
   });
 
   final QueryDocumentSnapshot<Object?> order;
+
+  @override
+  State<CustomerOrderModel> createState() => _CustomerOrderModelState();
+}
+
+class _CustomerOrderModelState extends State<CustomerOrderModel> {
+  double rate = 3;
+  late String comment;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +40,7 @@ class CustomerOrderModel extends StatelessWidget {
                   child: SizedBox(
                     width: 80,
                     height: 80,
-                    child: Image.network(order['orderimage']),
+                    child: Image.network(widget.order['orderimage']),
                   ),
                 ),
                 Flexible(
@@ -37,7 +48,7 @@ class CustomerOrderModel extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        order['ordername'],
+                        widget.order['ordername'],
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: TextStyle(
@@ -52,11 +63,12 @@ class CustomerOrderModel extends StatelessWidget {
                           children: [
                             Text(
                               ('\$ ') +
-                                  (order['orderprice'].toStringAsFixed(2)),
+                                  (widget.order['orderprice']
+                                      .toStringAsFixed(2)),
                               style: const TextStyle(fontSize: 18),
                             ),
                             Text(
-                              'X ${order['orderqty'].toStringAsFixed(2)}',
+                              'X ${widget.order['orderqty'].toStringAsFixed(2)}',
                               style: const TextStyle(fontSize: 18),
                             )
                           ],
@@ -70,14 +82,17 @@ class CustomerOrderModel extends StatelessWidget {
           ),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [const Text('see More..'), Text(order['deliverystatus'])],
+            children: [
+              const Text('see More..'),
+              Text(widget.order['deliverystatus'])
+            ],
           ),
           children: [
             Container(
               //height: 200,
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: order['deliverystatus'] == 'delivered'
+                  color: widget.order['deliverystatus'] == 'delivered'
                       ? Colors.brown.withOpacity(0.4)
                       : Colors.yellow.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(15)),
@@ -87,19 +102,19 @@ class CustomerOrderModel extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Name: ${order['custname']}',
+                      'Name: ${widget.order['custname']}',
                       style: const TextStyle(fontSize: 16),
                     ),
                     Text(
-                      'Phone no: : ${order['phone']}',
+                      'Phone no: : ${widget.order['phone']}',
                       style: const TextStyle(fontSize: 16),
                     ),
                     Text(
-                      'Email Address: ${order['email']}',
+                      'Email Address: ${widget.order['email']}',
                       style: const TextStyle(fontSize: 16),
                     ),
                     Text(
-                      'Address: ${order['address']}',
+                      'Address: ${widget.order['address']}',
                       style: const TextStyle(fontSize: 16),
                     ),
                     Row(
@@ -109,7 +124,7 @@ class CustomerOrderModel extends StatelessWidget {
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          '${order['paymentstatus']}',
+                          '${widget.order['paymentstatus']}',
                           style: const TextStyle(
                               fontSize: 16, color: Colors.purple),
                         ),
@@ -122,28 +137,163 @@ class CustomerOrderModel extends StatelessWidget {
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          '${order['deliverystatus']}',
+                          '${widget.order['deliverystatus']}',
                           style: const TextStyle(
                               fontSize: 16, color: Colors.green),
                         ),
                       ],
                     ),
-                    order['deliverystatus'] == 'shipping'
+                    widget.order['deliverystatus'] == 'shipping'
                         ? Text(
                             ('Estimated Delivery date: ') +
-                                (DateFormat('yyyy-MM-dd')
-                                        .format(order['deliverydate'].toDate()))
+                                (DateFormat('yyyy-MM-dd').format(
+                                        widget.order['deliverydate'].toDate()))
                                     .toString(),
                             style: const TextStyle(fontSize: 16),
                           )
                         : const Text(''),
-                    order['deliverystatus'] == 'delivered' &&
-                            order['orderreview'] == false
+                    widget.order['deliverystatus'] == 'delivered' &&
+                            widget.order['orderreview'] == false
                         ? TextButton(
-                            onPressed: () {}, child: const Text('Write review'))
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => Material(
+                                        color: Colors.white,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 180),
+                                          child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                RatingBar.builder(
+                                                    minRating: 3,
+                                                    allowHalfRating: true,
+                                                    initialRating: 3,
+                                                    itemBuilder: (context, _) =>
+                                                        const Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber,
+                                                        ),
+                                                    onRatingUpdate: (rating) {
+                                                      rate = rating;
+                                                    }),
+                                                TextField(
+                                                  decoration: InputDecoration(
+                                                      hintText:
+                                                          'Enter your review',
+                                                      border: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  15)),
+                                                      enabledBorder: OutlineInputBorder(
+                                                          borderSide:
+                                                              const BorderSide(
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  width: 1),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  15)),
+                                                      focusedBorder: OutlineInputBorder(
+                                                          borderSide:
+                                                              const BorderSide(
+                                                                  color: Colors
+                                                                      .amber,
+                                                                  width: 2),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15))),
+                                                  onChanged: (value) {
+                                                    comment = value;
+                                                  },
+                                                ),
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      YellowButton(
+                                                          width: 0.3,
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          label: 'Cancel'),
+                                                      const SizedBox(width: 20),
+                                                      YellowButton(
+                                                          width: 0.3,
+                                                          onPressed: () async {
+                                                            CollectionReference
+                                                                collRef =
+                                                                FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        'products')
+                                                                    .doc(widget
+                                                                            .order[
+                                                                        'proid'])
+                                                                    .collection(
+                                                                        'reviews');
+                                                            await collRef
+                                                                .doc(FirebaseAuth
+                                                                    .instance
+                                                                    .currentUser!
+                                                                    .uid)
+                                                                .set({
+                                                              'name': widget
+                                                                      .order[
+                                                                  'custname'],
+                                                              'email':
+                                                                  widget.order[
+                                                                      'email'],
+                                                              'rate': rate,
+                                                              'comment':
+                                                                  comment,
+                                                              'profileimage':
+                                                                  widget.order[
+                                                                      'profileimage']
+                                                            }).whenComplete(
+                                                                    () async {
+                                                              await FirebaseFirestore
+                                                                  .instance
+                                                                  .runTransaction(
+                                                                      (transaction) async {
+                                                                DocumentReference
+                                                                    documentReference =
+                                                                    FirebaseFirestore
+                                                                        .instance
+                                                                        .collection(
+                                                                            'orders')
+                                                                        .doc(widget
+                                                                            .order['orderid']);
+                                                                transaction.update(
+                                                                    documentReference,
+                                                                    {
+                                                                      'orderreview':
+                                                                          true
+                                                                    });
+                                                              });
+                                                            });
+                                                            await Future.delayed(
+                                                                    const Duration(
+                                                                        microseconds:
+                                                                            100))
+                                                                .whenComplete(() =>
+                                                                    Navigator.pop(
+                                                                        context));
+                                                          },
+                                                          label: 'OK')
+                                                    ])
+                                              ]),
+                                        ),
+                                      ));
+                            },
+                            child: const Text('Write review'))
                         : const Text(''),
-                    order['deliverystatus'] == 'delivered' &&
-                            order['orderreview'] == true
+                    widget.order['deliverystatus'] == 'delivered' &&
+                            widget.order['orderreview'] == true
                         ? const Row(
                             children: [
                               Icon(

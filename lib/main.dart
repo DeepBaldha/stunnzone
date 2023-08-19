@@ -8,11 +8,20 @@ import 'package:stunnzone/main_screens/customer_home.dart';
 import 'package:stunnzone/main_screens/supplier_home.dart';
 import 'package:stunnzone/main_screens/welcome.dart';
 import 'package:stunnzone/providers/cart_provider.dart';
+import 'package:stunnzone/providers/stripe_id.dart';
 import 'package:stunnzone/providers/wish_provider.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'auth/supplier_login.dart';
 import 'auth/supplier_signup.dart';
 
 void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = stripePublishableKey;
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutters tripe';
+  await Stripe.instance.applySettings();
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MultiProvider(providers: [

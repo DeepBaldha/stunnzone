@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
@@ -19,6 +20,7 @@ import 'full_screen_view.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final dynamic proList;
+
   const ProductDetailsScreen({Key? key, required this.proList})
       : super(key: key);
 
@@ -32,14 +34,23 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
       .where('maincateg', isEqualTo: widget.proList['maincateg'])
       .where('subcateg', isEqualTo: widget.proList['subcateg'])
       .snapshots();
+  late final Stream<QuerySnapshot> reviewStream = FirebaseFirestore.instance
+      .collection('products')
+      .doc(widget.proList['proid'])
+      .collection('reviews')
+      .snapshots();
 
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
   GlobalKey<ScaffoldMessengerState>();
   late List<dynamic> imagesList = widget.proList['proimages'];
+
   @override
   Widget build(BuildContext context) {
     var onSale = widget.proList['discount'];
-    var existingItemCart = context.read<Cart>().getItems.firstWhereOrNull(
+    var existingItemCart = context
+        .read<Cart>()
+        .getItems
+        .firstWhereOrNull(
             (element) => element.documentId == widget.proList['proid']);
     return Material(
       child: SafeArea(
@@ -54,14 +65,18 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => FullScreenView(
-                                imagesList: imagesList,
-                              )));
+                              builder: (context) =>
+                                  FullScreenView(
+                                    imagesList: imagesList,
+                                  )));
                     },
                     child: Stack(
                       children: [
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.45,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.45,
                           child: Swiper(
                             pagination: const SwiperPagination(
                                 builder: SwiperPagination.fraction),
@@ -233,6 +248,7 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               fontWeight: FontWeight.w600,
                               color: Colors.blueGrey.shade800),
                         ),
+                        Reviews(reviewStream),
                         const ProDetailsHeader(
                           label: '  Similar Items  ',
                         ),
@@ -302,8 +318,9 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => VisitStore(
-                                        suppId: widget.proList['sid'])));
+                                    builder: (context) =>
+                                        VisitStore(
+                                            suppId: widget.proList['sid'])));
                           },
                           icon: const Icon(Icons.store)),
                       const SizedBox(
@@ -314,12 +331,16 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const CartScreen(
+                                    builder: (context) =>
+                                    const CartScreen(
                                       back: AppBarBackButton(),
                                     )));
                           },
                           icon: badges.Badge(
-                              showBadge: context.read<Cart>().getItems.isEmpty
+                              showBadge: context
+                                  .read<Cart>()
+                                  .getItems
+                                  .isEmpty
                                   ? false
                                   : true,
                               badgeStyle: const BadgeStyle(
@@ -379,6 +400,7 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
 class ProDetailsHeader extends StatelessWidget {
   final String label;
+
   const ProDetailsHeader({Key? key, required this.label}) : super(key: key);
 
   @override
@@ -415,4 +437,64 @@ class ProDetailsHeader extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget Reviews(var reviewStream) {
+  return ExpandablePanel(
+      header: const Padding(
+          padding: EdgeInsets.all(10),
+          child: Text('Reviews',
+              style: TextStyle(fontSize: 24, color: Colors.blue))),
+      collapsed: const Text('collapsed'),
+      expanded: AllReviews(reviewStream));
+}
+
+Widget AllReviews(var reviewStream) {
+  return StreamBuilder<QuerySnapshot>(
+    stream: reviewStream,
+    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot2) {
+      if (snapshot2.hasError) {
+        return const Text('Something went wrong');
+      }
+
+      if (snapshot2.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      if (snapshot2.data!.docs.isEmpty) {
+        return const Center(
+            child: Text(
+              'This item \n\n has no reviews yet!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 26,
+                  color: Colors.blueGrey,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Acme',
+                  letterSpacing: 1.5),
+            ));
+      }
+
+      return ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: snapshot2.data!.docs.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+                leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        snapshot2.data!.docs[index]['profileimage'])),
+                title: Row(
+                    children: [
+                      Text(snapshot2.data!.docs[index]['name']), Row(children: [
+                        Text(snapshot2.data!.docs[index]['rate'].toString()),
+                        const Icon(Icons.star,color: Colors.amber,)
+                      ],)
+                    ])
+            );
+          });
+    },
+  );
 }
