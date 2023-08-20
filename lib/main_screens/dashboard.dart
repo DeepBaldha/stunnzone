@@ -5,7 +5,7 @@ import 'package:stunnzone/dashboard_components/manage_products.dart';
 import 'package:stunnzone/dashboard_components/suppl_balance.dart';
 import 'package:stunnzone/dashboard_components/suppl_orders.dart';
 import 'package:stunnzone/dashboard_components/suppl_statics.dart';
-import 'package:stunnzone/main_screens/visit_store.dart';
+import 'package:stunnzone/minor_screen/visit_store.dart';
 import 'package:stunnzone/widgets/appbar_widgets.dart';
 
 List<String> label = [

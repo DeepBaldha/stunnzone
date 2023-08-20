@@ -48,6 +48,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: Colors.white,
         title: const FakeSearch(),

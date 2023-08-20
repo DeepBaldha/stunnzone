@@ -6,6 +6,8 @@ import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import 'package:stunnzone/models/product_model.dart';
 
+import 'edit_store.dart';
+
 class VisitStore extends StatefulWidget {
   final String suppId;
 
@@ -104,9 +106,11 @@ class _VisitStoreState extends State<VisitStore> {
                                         width: 3, color: Colors.black)),
                                 child: MaterialButton(
                                   onPressed: () {
-                                    setState(() {
-                                      following = !following;
-                                    });
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditStore(data: data)));
                                   },
                                   child: const Row(
                                     mainAxisAlignment:

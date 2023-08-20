@@ -122,14 +122,17 @@ class CartModel extends StatelessWidget {
                                               )
                                             ],
                                             cancelButton: TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text('Cancel',
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: Colors.red,
-                                                    ))),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         );
                                       },
