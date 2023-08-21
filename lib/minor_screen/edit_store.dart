@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stunnzone/widgets/appbar_widgets.dart';
 import 'package:stunnzone/widgets/yellow_button.dart';
 
@@ -12,6 +15,29 @@ class EditStore extends StatefulWidget {
 }
 
 class _EditStoreState extends State<EditStore> {
+  final ImagePicker _picker = ImagePicker();
+  dynamic _pickedImageError;
+  XFile? _imageFileLogo;
+
+  void pickStoreLogo() async {
+    try {
+      final pickStoreLogo = await _picker.pickImage(
+          source: ImageSource.gallery,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: 95);
+      setState(() {
+        _imageFileLogo = pickStoreLogo;
+      });
+    } catch (e) {
+      setState(() {
+        _pickedImageError = e;
+      });
+      // ignore: avoid_print
+      print(_pickedImageError);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +59,20 @@ class _EditStoreState extends State<EditStore> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-               CircleAvatar(
+              CircleAvatar(
                 backgroundImage: NetworkImage(widget.data['storeLogo']),
                 radius: 60,
               ),
-              YellowButton(width: 0.3, onPressed: () {}, label: 'Change'),
+              YellowButton(
+                  width: 0.25,
+                  onPressed: () {
+                    pickStoreLogo();
+                  },
+                  label: 'Change'),
+              CircleAvatar(
+                radius: 60,
+                backgroundImage: FileImage(File(_imageFileLogo!.path)),
+              ),
             ],
           ),
         ],
