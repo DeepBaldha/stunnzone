@@ -44,6 +44,7 @@ class _VisitStoreState extends State<VisitStore> {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
+          print(data);
           return Scaffold(
             backgroundColor: Colors.blueGrey.shade100,
             appBar: AppBar(

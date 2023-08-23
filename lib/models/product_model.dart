@@ -70,7 +70,7 @@ class _ProductModelState extends State<ProductModel> {
                                   '\$ ',
                                   style: TextStyle(
                                       color: Colors.red,
-                                      fontSize: 16,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text(
@@ -84,11 +84,11 @@ class _ProductModelState extends State<ProductModel> {
                                           fontWeight: FontWeight.w600)
                                       : const TextStyle(
                                           color: Colors.red,
-                                          fontSize: 16,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(
-                                  width: 6,
+                                  width: 2,
                                 ),
                                 onSale != 0
                                     ? Text(
@@ -100,7 +100,7 @@ class _ProductModelState extends State<ProductModel> {
                                             .toStringAsFixed(2),
                                         style: const TextStyle(
                                             color: Colors.red,
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w600),
                                       )
                                     : const Text(''),
@@ -113,6 +113,7 @@ class _ProductModelState extends State<ProductModel> {
                                     icon: const Icon(
                                       Icons.edit,
                                       color: Colors.red,
+                                      size: 24,
                                     ))
                                 : IconButton(
                                     onPressed: () {
