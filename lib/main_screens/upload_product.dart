@@ -36,6 +36,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
 
   List<XFile>? imagesFileList = [];
   List<String> imagesUrlList = [];
+
   // ignore: unused_field
   dynamic _pickedImageError;
 
@@ -190,11 +191,10 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                             ? previewImages()
                             : const Center(
                                 child: Text(
-                                  'you have not \n \n picked images yet !',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ),
+                                'you have not \n \n picked images yet !',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 18),
+                              )),
                       ),
                       SizedBox(
                         height: width * 0.5,
